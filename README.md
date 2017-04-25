@@ -60,4 +60,101 @@ You can make entities with two components.  No more, no less.  And you can't rem
 
 # How fast is it?
 
-'Cause that's the real point, right?
+'Cause that's the real point, right?  The benchmark is a slightly-hacked-up version of the [ecs_bench](https://github.com/lschmierer/ecs_bench) benchmark, which like all benchmarks is awful but is what everyone looks at.  So:
+
+## Dual-core server (VM):
+
+ Library         | pos_vel build                 | pos_vel update                 | parallel build                 | parallel
+update
+ ---------------
+|:-----------------------------:|:------------------------------:|:------------------------------:|:--------------------------------:
+ [calx-ecs]      | 331,844 ns/iter (+/- 60,653)      | 17,982 ns/iter (+/- 882)      | 459,280 ns/iter (+/- 47,495)      | 75,199
+ns/iter (+/- 1,960)
+ [constellation] | 264,420 ns/iter (+/- 26,055) | 7,311 ns/iter (+/- 1,877) | 485,141 ns/iter (+/- 15,568) | 111,954 ns/iter (+/-
+69,501)
+ [ecs]           | 1,523,169 ns/iter (+/- 532,686)           | 319,704 ns/iter (+/- 150,149)           | 1,499,052 ns/iter (+/-
+101,118)           | 3,815,809 ns/iter (+/- 663,224)
+ [froggy]        | 958,573 ns/iter (+/- 99,809)        | 18,004 ns/iter (+/- 1,491)        | 2,247,556 ns/iter (+/- 208,079)
+ | 84,085 ns/iter (+/- 29,542)
+ [recs]          | 16,421,689 ns/iter (+/- 2,972,704)          | 6,848,831 ns/iter (+/- 3,795,579)          | 21,636,351 ns/iter
+(+/- 3,082,950)          | 13,946,178 ns/iter (+/- 5,881,502)
+ [specs]         | 364,951 ns/iter (+/- 184,508)         | 51,987 ns/iter (+/- 14,097)         | 492,265 ns/iter (+/- 170,958)
+    | 86,700 ns/iter (+/- 31,416)
+ [trex]          | 979,435 ns/iter (+/- 77,867)          | 229,093 ns/iter (+/- 51,886)          | 1,909,282 ns/iter (+/-
+445,376)
+         | 443,308 ns/iter (+/- 126,689)
+ [duckling]          | 459,280 ns/iter (+/- 47,495)          | 75,199 ns/iter (+/- 1,960)          | 3,448,372 ns/iter (+/-
+546,962)          | 1,146,826 ns/iter (+/- 381,791)
+
+
+## Quad-core desktop (i7 4790K):
+
+ Library         | pos_vel build                 | pos_vel update                 | parallel build                 | parallel
+update
+ ---------------
+|:-----------------------------:|:------------------------------:|:------------------------------:|:--------------------------------:
+ [calx-ecs]      | 195,331 ns/iter (+/- 15,037)      | 11,875 ns/iter (+/- 337)      | 279,369 ns/iter (+/- 11,323)      | 51,052
+ns/iter (+/- 1,782)
+ [constellation] | 172,863 ns/iter (+/- 6,352) | 4,808 ns/iter (+/- 223) | 309,432 ns/iter (+/- 10,112) | 100,042 ns/iter (+/-
+15,305)
+ [ecs]           | 919,894 ns/iter (+/- 49,128)           | 193,387 ns/iter (+/- 8,319)           | 911,655 ns/iter (+/- 59,144)
+| 2,228,651 ns/iter (+/- 104,434)
+ [froggy]        | 665,024 ns/iter (+/- 19,636)        | 10,130 ns/iter (+/- 385)        | 1,355,981 ns/iter (+/- 61,574)
+| 39,833 ns/iter (+/- 3,246)
+ [recs]          | 8,663,385 ns/iter (+/- 672,072)          | 2,327,478 ns/iter (+/- 567,831)          | 10,788,256 ns/iter (+/-
+1,107,606)          | 5,773,911 ns/iter (+/- 1,765,957)
+ [specs]         | 204,633 ns/iter (+/- 13,123)         | 26,648 ns/iter (+/- 1,111)         | 286,225 ns/iter (+/- 24,567)
+| 42,372 ns/iter (+/- 6,943)
+ [trex]          | 613,310 ns/iter (+/- 36,629)          | 142,329 ns/iter (+/- 6,242)          | 1,164,912 ns/iter (+/- 137,753)
+| 300,398 ns/iter (+/- 15,304)
+ [duckling]          | 1,908,954 ns/iter (+/- 162,028)          | 174,088 ns/iter (+/- 111,111)          | 1,950,064 ns/iter (+/-
+138,703)          | 297,987 ns/iter (+/- 126,111)
+
+
+## Eight-core desktop (R7 1700):
+
+ Library         | pos_vel build                 | pos_vel update                 | parallel build                 | parallel
+update
+ ---------------
+|:-----------------------------:|:------------------------------:|:------------------------------:|:--------------------------------:
+ [calx-ecs]      | 176,725 ns/iter (+/- 20,154)      | 12,245 ns/iter (+/- 935)      | 241,929 ns/iter (+/- 4,726)      | 71,024
+ns/iter (+/- 3,547)
+ [constellation] | 144,436 ns/iter (+/- 20,872) | 4,833 ns/iter (+/- 444) | 304,474 ns/iter (+/- 26,561) | 142,104 ns/iter (+/-
+10,091)
+ [ecs]           | 1,098,158 ns/iter (+/- 83,806)           | 264,841 ns/iter (+/- 30,045)           | 1,116,987 ns/iter (+/-
+64,762)           | 3,226,200 ns/iter (+/- 337,694)
+ [froggy]        | 585,574 ns/iter (+/- 55,544)        | 7,583 ns/iter (+/- 608)        | 1,394,921 ns/iter (+/- 61,279)        |
+95,177 ns/iter (+/- 26,246)
+ [recs]          | 9,255,650 ns/iter (+/- 319,178)          | 2,879,176 ns/iter (+/- 157,361)          | 11,734,252 ns/iter (+/-
+508,273)          | 6,960,598 ns/iter (+/- 420,790)
+ [specs]         | 302,820 ns/iter (+/- 110,025)         | 69,680 ns/iter (+/- 40,156)         | 312,214 ns/iter (+/- 131,336)
+| 80,826 ns/iter (+/- 698)
+ [trex]          | 634,846 ns/iter (+/- 36,926)          | 146,467 ns/iter (+/- 11,642)          | 1,112,914 ns/iter (+/- 59,634)
+| 312,112 ns/iter (+/- 50,536)
+ [duckling]          | 1,891,190 ns/iter (+/- 133,853)          | 190,331 ns/iter (+/- 11,072)          | 1,959,849 ns/iter (+/-
+126,833)          | 329,353 ns/iter (+/- 32,939)
+
+## 48-core compute server (Opteron 6176):
+
+
+ Library         | pos_vel build                 | pos_vel update                 | parallel build                 | parallel
+update
+ ---------------
+|:-----------------------------:|:------------------------------:|:------------------------------:|:--------------------------------:
+ [calx-ecs]      | 500,183 ns/iter (+/- 9,473)      | 37,525 ns/iter (+/- 119)      | 907,678 ns/iter (+/- 27,388)      | 202,474
+ns/iter (+/- 1,270)
+ [constellation] | 434,830 ns/iter (+/- 343,822) | 14,626 ns/iter (+/- 35) | 861,489 ns/iter (+/- 1,963) | 1,576,463 ns/iter (+/-
+509,304)
+ [ecs]           | 2,280,898 ns/iter (+/- 42,373)           | 521,050 ns/iter (+/- 19,091)           | 2,376,688 ns/iter (+/-
+37,621)           | 6,268,735 ns/iter (+/- 195,149)
+ [froggy]        | 1,317,524 ns/iter (+/- 3,016)        | 29,822 ns/iter (+/- 63)        | 4,057,576 ns/iter (+/- 37,515)
+| 267,346 ns/iter (+/- 74,781)
+ [recs]          | 21,453,312 ns/iter (+/- 3,977,101)          | 5,875,710 ns/iter (+/- 387,937)          | 27,582,075 ns/iter
+(+/- 283,694)          | 12,104,573 ns/iter (+/- 320,076)
+ [specs]         | 741,133 ns/iter (+/- 298,069)         | 251,997 ns/iter (+/- 16,617)         | 986,633 ns/iter (+/- 28,471)
+| 365,614 ns/iter (+/- 28,959)
+ [trex]          | 2,161,095 ns/iter (+/- 29,113)          | 555,833 ns/iter (+/- 10,045)          | 3,648,676 ns/iter (+/-
+530,292)          | 1,007,904 ns/iter (+/- 2,624)
+ [duckling]          | 907,678 ns/iter (+/- 27,388)          | 202,474 ns/iter (+/- 1,270)          | 907,678 ns/iter (+/-
+27,388)          | 202,474 ns/iter (+/- 1,270)
+
