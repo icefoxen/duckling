@@ -4,6 +4,10 @@ An experiment in making a massively-parallel entity-component system for video g
 
 ...nah, sounds like too much work.
 
+# How complete is it?
+
+You can make entities with two components.  No more, no less.  And you can't remove entities.  So that should give you an idea.
+
 # What's cool about it?
 
 Okay, buckle your seatbelts for a rant...
@@ -53,10 +57,6 @@ Well entities can modify themselves, but they need to be able to modify each oth
 Very nice, right?  All mutation is made explicit, and all mutation happens "between" frames (or at least between one system ending and the next beginning) in a basically atomic but also basically instantanious fashion; it's single-threaded, but it's just a buffer swap.
 
 The problem here is that dispatching events is a pain in the butt; if you return a new `Vec<Event>` or whatever you're allocating memory, which you want to avoid, and either way you end up with a big collection fo events to go through to route the messages to the destination entities.  So instead of that, each entity gets its own event queue, and it's wrapped up in an object that gets passed to each entity, so your system is now `fn(Entity, Events, &mut EventQueue)`.  The event queue is also double-buffered, so no allocation has to happen.  The only part that can't be parallelized is adding an event to an entity's queue: that requires a write lock.  If two entities try to send a message to the same target entity at the same time, one will block until the other is done.  On the up side you're just copying your event into an array, so it's not exactly slow, but this is a source of blocking.  On the up side, it is literally the *only* source of blocking.
-
-# How complete is it?
-
-You can make entities with two components.  No more, no less.  And you can't remove entities.  So that should give you an idea.
 
 # How fast is it?
 
@@ -117,3 +117,13 @@ You can make entities with two components.  No more, no less.  And you can't rem
  [trex]          | 2,161,095 ns/iter (+/- 29,113)          | 555,833 ns/iter (+/- 10,045)          | 3,648,676 ns/iter (+/- 530,292)          | 1,007,904 ns/iter (+/- 2,624)
  [duckling]          | 907,678 ns/iter (+/- 27,388)          | 202,474 ns/iter (+/- 1,270)          | 907,678 ns/iter (+/- 27,388)          | 202,474 ns/iter (+/- 1,270)
 
+# Notes for future work
+
+ * Profile!
+ * It would be nice to be able to make it so you don't bother copying entities into a new buffer when they're not being changed.
+ * The easy way to do that would be to make each column in the table double-buffered independently with a dirty flag associated
+   with it.  This brings some benefits: One, running a system checks the dirty flag of the components it needs and can raise an
+   error (or swap buffers, or just keep going, or whatever???) if its "current" state is out of date.  Two, doing a flip buffers
+   operation can be cheaper because we don't need to flip non-dirty buffers.  And THREE, it might become possible to run systems
+   in parallel as well.  However, the flip-buffers operation is not the expensive and weird part, the deliver-messages operation
+   is.  So figure out how that's going to work.
