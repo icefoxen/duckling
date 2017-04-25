@@ -1,0 +1,11 @@
+[package]
+name = "duckling"
+version = "0.0.1"
+authors = ["Simon Heath <icefoxen@gmail.com>"]
+
+[dependencies]
+rayon = "0.7"
+anymap = "0.12"
+
+[dev-dependencies]
+rand = "0.3"
