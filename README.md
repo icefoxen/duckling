@@ -60,7 +60,18 @@ The problem here is that dispatching events is a pain in the butt; if you return
 
 # How fast is it?
 
-'Cause that's the real point, right?  The benchmark is a slightly-hacked-up version of the [ecs_bench](https://github.com/lschmierer/ecs_bench) benchmark, which like all benchmarks is awful but is what everyone looks at.  So:
+'Cause that's the real point, right?  The benchmark is a slightly-hacked-up version of the
+[ecs_bench](https://github.com/lschmierer/ecs_bench) benchmark, which like all benchmarks is awful but is what everyone looks at.
+It's even more awful because I'm comparing apples to oranges across different machines, so really these are some of the least
+meaningful numbers ever.  But still:
+
+Graphs:
+
+![pos-vel benchmark](https://github.com/icefoxen/duckling/blob/master/figures/pos_vel.png)
+
+![parallel update benchmark](https://github.com/icefoxen/duckling/blob/master/figures/parallel-update.png)
+
+Raw numbers:
 
 ## Dual-core server (VM):
 
