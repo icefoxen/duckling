@@ -67,9 +67,9 @@ meaningful numbers ever.  But still:
 
 Graphs:
 
-[[https://github.com/icefoxen/duckling/blob/master/figures/pos_vel.png|alt=Pos-vel benchmark]]
+![pos-vel benchmark](https://github.com/icefoxen/duckling/blob/master/figures/pos_vel.png)
 
-[[https://github.com/icefoxen/duckling/blob/master/figures/parallel-update.png|alt=Parallel update benchmark]]
+![parallel update benchmark](https://github.com/icefoxen/duckling/blob/master/figures/parallel-update.png)
 
 Raw numbers:
 
